@@ -20,7 +20,7 @@ async function addPost(title, postDate, userId){
         
     }catch(e){
         console.error(e)
-        throw error
+        throw e
     }
 }
 
@@ -44,10 +44,6 @@ async function getSinglePost(id){
             where: {id},
             include: {user: true}
         });
-
-        if(!perPost){
-            throw new Error(`Post with id ${id} not found`)
-        }
 
         return perPost;
 
@@ -123,7 +119,9 @@ async function deletePost(id){
         const deletedPost = await prisma.post.delete({
             where: {id},
             include: { user: true}
-        })
+        });
+
+        return deletedPost
 
     }catch(e){
         console.error(e)
@@ -133,4 +131,4 @@ async function deletePost(id){
 
 
 
-module.exports = { addPost, getAllPosts, getSinglePost}
+module.exports = { addPost, getAllPosts, getSinglePost, updatePost, deletePost}
